@@ -276,7 +276,7 @@ mais etant donné qu on cree nos composants par le generateur, la solution n°1 
     input.value;
   }
 
-  ``
+  ```
 
   @ViewChild
     - decorateur permet d'acceder à une reference locale dans le ts
@@ -311,8 +311,8 @@ mais etant donné qu on cree nos composants par le generateur, la solution n°1 
 - le selector d'une directive doit commencer par [] => [appBetterHighLightStyle]
 - cette directive est mise sur une balise html
 
-![](./HostBinding_ts.png)
-![](./HostBinding_html.png)
+![](HostBinding_ts.png)
+![](HostBinding_html.png)
 
 - quand la souris passe sur le paragraphe, il devient bleu, sinon transparent
 
@@ -320,14 +320,14 @@ Comment eviter d'utiliser render ?
 Utiliser Hostbinding pour se lier à une propriete du tag HTML
 (ici on se lie a la propriete style)
 
-![](./HostBinding_alternative.png)
+![](HostBinding_alternative.png)
 - meme resultat que precedemment, sauf que dans Hostbinding on donne le style que l'on veut ('style.backgroundColor')
 - on conserve le meme html
 
 - Comment creer une directive commencant par [] comme [ngStyle]
 
-![](./reel_directive.png)
-![](./reel_directive_html.png)
+![](reel_directive.png)
+![](reel_directive_html.png)
 
 - ici en mettant la directive entre crochet, on peut lui faire passer un variable du html vers le typescript.
 - Dans le ts, penser à utiliser @Input
@@ -337,50 +337,50 @@ Utiliser Hostbinding pour se lier à une propriete du tag HTML
 /!\ : aucune redirection si je redirige vers une url qui pointe sur le meme composant affiché. l'url changera ms les données à l'ecran resteront identiques.
 - utiliser la propriete snapshot pour obtenir les parametres de l'url
 
-![](./route_wilcard.png)
+![](route_wilcard.png)
 - path: '**' => mettre en dernier position sinon toutes les routes redirigerons vers /not-found
 
 Comment bloquer des url si l'utilisateur n'a pas le droit d'y acceder => CanActivate
 - creer une classe qui implemente CanActivate
 - cette classe doit implementer une methode appele canActivate qui retourne un Observable ou une promesse si elle est executée de facon asynchrone (joindre un serveur) ou un boolean si elle est executé de facon sycnhrone.
 
-![](./authGuardService.png)
+![](authGuardService.png)
 - ici il simule un appel a un service d authentification
-![](./authGuard.png)
+![](authGuard.png)
 - le service qui dit si tu n as pas les droits, je te redirige vers "/"
-![](./canActivateToUrl.png)
+![](canActivateToUrl.png)
 - ajout de canActivate aux urls auxquelles on souhaite mettre de la logique
 
 Si je souhaite uniquement proteger des url filles, il existe canActivateChild
 - implementer canActivatechild et overrider la methode canActivatechild
 - ajouter aux routes
 
-![](./canActivateChild.png)
-![](./canActivateChildTourl.png)
+![](canActivateChild.png)
+![](canActivateChildTourl.png)
 Ici on pourra acceder a /servers mais pas aux url filles
 
 CanDeactivate => mettre de la logique avant de quitter une url
 
 ### Passer des données static a une page
 - ajouter l attribut data dans les route, et le json
-![](./static_data_to_url.png)
+![](static_data_to_url.png)
 
 - recuperer l'info dans le ts, par this.route.snapshot.data ou this.route.data.subscribe
-![](./static_data_consume.png)
+![](static_data_consume.png)
 
 ### Passer des données dynamiques a une page
 
-![](./dynamic_data_service.png)
+![](dynamic_data_service.png)
 - creer un service qui implement Resolve. En type generic, mettre le type que l'on souhaite donner à l apage
 - le service override une methode Resolve
 
 - ajouter ce service à l'url avec le parametre Resolve
 - celui ci prend une key pair value.
 - donné un nom à la key (ici Server) et lui donner le service précedent
-![](./dynamic_data_setup.png)
+![](dynamic_data_setup.png)
 
 
-![](./dynamic_data_consume.png)
+![](dynamic_data_consume.png)
 - recuperer la key pair grace à data['server'] ('server' est le nom de la key definit precedemment)
 
 ### Observable
@@ -388,7 +388,7 @@ CanDeactivate => mettre de la logique avant de quitter une url
 - sans ca, on aura pas le choix que d attendre que la tache s accomplisse, ce qui bloque le programme
 - le spromesses font le meme taff mais Angular prefere utiliser Observable
 
-![](./observable.png)
+![](observable.png)
 
 - une fois la donnée consomme par l'observer, ce dernier à 3 choix:
   - gerer la data
@@ -402,14 +402,14 @@ Inutile sur ceux cree par Angular par ex this.route.params . Angular se charge d
 
 ### Custom observable
 
-![](./custom_observable.png)
+![](custom_observable.png)
 
 Observable.create
 - observer : on dit ce que va obtenir l'observer. A ce moment la, la methode ne s execute pas encore.
 - subscribe, execute la methode. Prend en parametre 3 functions
 - observer.next : on dit que l oberver recevra count comme valeur
 
-![](./observable_error_complete.png)
+![](observable_error_complete.png)
 observer.error : lever une erreur. elle est géré en second parametre lors du subscribe
 
 observer.complete : ne prend pas de parametre et est geré en dernier parametre lors du subscribe.
@@ -424,7 +424,7 @@ observer.complete : ne prend pas de parametre et est geré en dernier parametre 
 - pipe accepte plusieurs operators
 - /!\ appeler Pipe avant le subscribe
 
-![](./observable_operator.png)
+![](observable_operator.png)
 
 
 ### Subject
@@ -435,10 +435,10 @@ observer.complete : ne prend pas de parametre et est geré en dernier parametre 
 
 |Avant|Apres|
 |--|--|
-|![](./withEmitterService.png)|![](./subjectService.png)|
-|![](./withEmitterTS.png)|![](./subjectTS.png)|
-|![](./withEmitterSubscribe.png)|![](./subjectSubscribe.png)|
-|![](./withEmitterHtml.png)||
+|![](withEmitterService.png)|![](subjectService.png)|
+|![](withEmitterTS.png)|![](subjectTS.png)|
+|![](withEmitterSubscribe.png)|![](subjectSubscribe.png)|
+|![](withEmitterHtml.png)||
 
 Creation du service et utilisation dans le composant fils en emettant true
 Le parent subscribe et recupere le boolean pour initialiser une variable de classe
@@ -453,7 +453,7 @@ dans le composant parent, penser a unsubscribe
 - fonctionnalité propre a Angular 2
 - transforme les output dans le template sans modifier le input
 
-![](./pipe_intro.png)
+![](pipe_intro.png)
 ex: la propriete contient 'Max' mais on souhaite que le nom soit en majuscule lors du rendu
 
 - Angular fournit des pipes et il est possible de creer des custom pipes
@@ -471,7 +471,7 @@ ex: la propriete contient 'Max' mais on souhaite que le nom soit en majuscule lo
 
 #### Custom pipe
 
-![](./pipe_custom.png)
+![](pipe_custom.png)
 - ce custom pipe raccourcit une string
 - utiliser le decorator Pipe et donner le nom a utiliser dans le template
 - override la methode transform
@@ -480,7 +480,7 @@ ex: la propriete contient 'Max' mais on souhaite que le nom soit en majuscule lo
 
 #### Paramétrer Custom pipe
 
-![](./pipe_custom_parametre.png)
+![](pipe_custom_parametre.png)
 - ajouter des parametres à la methode transform
 - et dans le template faire => {{ name | shorten:5 }}
 - on peut ajouter autant de parametres que l'on veut dans la methode transfor. il faut s'assurer de tous les utiliser dans le template en les separant par ':'
@@ -498,10 +498,10 @@ Avec l option pure:false, l objet apparait.
 
 - permet d'afficher à l'ecran le resultat d'un traitement asynchrone (promesse, observable)
 
-![](./pipe_async_ts.png)
+![](pipe_async_ts.png)
 la variable appStatus (l.9) recevra 'stable' apres 2sec d'attente
 
-![](./pipe_async_html.png)
+![](pipe_async_html.png)
 Apres deux seconde, l'ecran affiche 'stable'
 Sans le pipe, il y a ecrit : [object, Object]
 
@@ -527,7 +527,7 @@ Workflow de Redux
 - l'equipe Angular a réimplementé Redux mais a rajouté des specificités tel que utiliser les sides effect plus facilement
 - cad il est possible d effectuer dates asynchrones (ex:des requetes HTTP) dans les actions. ce qui n'est pas possible dans le Redux natif, celui de ReactJS
 
-![](./redux.png)
+![](redux.png)
 - en violet : ce que Redux fait nativement mm dans ReactJS
 - en orange: les plus
 
@@ -537,12 +537,12 @@ Workflow de Redux
   - c'est une fonction js qui prend en parametre le state et une action
   - doit contenir un initial state, et le fournir en entete de la methode du reducer
 
-![](./reducer_init.png)
+![](reducer_init.png)
 
 - state = initialState : NgRx utilisera initialState au premier appel du reducer et ensuite utilisera le state modifié
 
 #### Action
-![](./action_init.png)
+![](action_init.png)
 - creer un repertoire store contenant les actions et les reducers
 - creer l'action
   - creer une constante pour le nom des action (cf: ADD_INGREDIENT)
@@ -551,9 +551,9 @@ Workflow de Redux
   - readonly: option typescript , leve une erreur si tente de la modifié. c'est comme final en java
   - payload n est pas obligatoire
 
-![](./action_use.png)
+![](action_use.png)
 
-![](./reducer_init_2.png)
+![](reducer_init_2.png)
 
 - utiliser l'action et la constante dans le reducer
 - importer tout ce qui se trouve dans le fichier des actions
@@ -570,33 +570,33 @@ Workflow de Redux
   Grace a tout ceci, cela permet de typer a fond le reducer
 
 #### Initialisation du store
-  ![](./store_init.png)
+  ![](store_init.png)
 le nom shoppingList est up to me
 
 #### Utilisation du store
 
-![](./store_use.png)
+![](store_use.png)
 
 - injecter le store dans le constructeur
 - reutiliser le nom definit dans app.module.ts (shoppingList) et lui donner un objet cad le model du state.
 - utiliser 'select' pour recuperer le reducer (l.25) en donnant en parametre le nom utilisé dans le constructeur => cela renvoie un observable du type du state (l.15)
 
-![](./store_use_template.png)
+![](store_use_template.png)
 
 Dans le template utiliser le pipe async et appeler l'attribut ingredient du state (l.9)
 
 #### Dispatch action
-![](./dispatch_action.png)
+![](dispatch_action.png)
 
-![](./action_for_dispatch.png)
+![](action_for_dispatch.png)
 Ajouter le payload au constructeur pour pouvoir le passer en parametre dans le ts
 
 #### Multiple actions
 
-![](./actions.png)
+![](actions.png)
 l.20 => creation d'une variable de type AddIngredient ou AddIngredients
 
-![](./actions_reducer.png)
+![](actions_reducer.png)
 l10 => action est de type ShoppingListAction.shoppingListAction cad soit de type addIngredient ou AddIngredients
 
 /!\ : si un attribut du state est un objet et fait reference à une donnée deja contenu dans le state, toujours spread l'objet.
@@ -619,11 +619,11 @@ ET NON
 
 #### Multiple reducers
 
-![](./reducers_multiple.png)
+![](reducers_multiple.png)
 
-![](./state_example.png)
+![](state_example.png)
 
-![](./global_state_use.png)
+![](global_state_use.png)
 
 creer un global state (creer un dossier store au niveau de app.module)
 - l'interface AppState = c'est le model du global state
