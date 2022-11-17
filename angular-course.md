@@ -276,7 +276,7 @@ mais etant donné qu on cree nos composants par le generateur, la solution n°1 
     input.value;
   }
 
-  ``
+  ```
 
   @ViewChild
     - decorateur permet d'acceder à une reference locale dans le ts
