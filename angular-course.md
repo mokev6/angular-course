@@ -632,3 +632,7 @@ creer un global state (creer un dossier store au niveau de app.module)
 
  /!\ cette constante doit etre unique dans toute l'application, car lorsque que le store est contacté, tous les reducers sont également appelés.
  La bonne pratique serait qu au lieu d'appeler ADD_INGREDIENT='ADD_INGREDIENT, faire ADD_INGREDIENT='[ShoopingList] ADD_INGREDIENT' (ajouter le nom de la fonctionnalité entre crochet)
+
+ ### Ng effect
+
+ npm install --save ngrx/effect

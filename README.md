@@ -632,3 +632,87 @@ creer un global state (creer un dossier store au niveau de app.module)
 
  /!\ cette constante doit etre unique dans toute l'application, car lorsque que le store est contacté, tous les reducers sont également appelés.
  La bonne pratique serait qu au lieu d'appeler ADD_INGREDIENT='ADD_INGREDIENT, faire ADD_INGREDIENT='[ShoopingList] ADD_INGREDIENT' (ajouter le nom de la fonctionnalité entre crochet)
+
+ ### Ng effect
+
+ npm install --save ngrx/effect
+
+ L'effect est une classe
+ Utilise un objet de type Action (different dens actions du store)
+ Cette action est un Observable qui contient toutes les actions dispatch par un composant.
+ Ici, il ne faut pas changer les états mais executer du code, par exemple executer une requete HTTP, et ensuite éxécuter une autre action( cette fois ci une action du store pour manipuler les états), une fois que la requete HTTP es terminé
+ - utiliser ofType dans la methode pipe fournit par l'observable. L'effet se declenchera lorsque l'action du reducer sera appelé.
+ - il est possible de mettre plusieurs action dans le ofType
+ - switchMap: crée un observable à partir des données d'un autre observable
+
+ /!\: l'observable contenu dans switchMap c'est comme si c etait un process qui tourne en continu. Si une erreur se leve et qu'elle n est pas gérée, ce process s'arrete et ne pourra pas être réappelé. il faut donc redemmarrer l'application.
+
+ - pour eviter ca, utilier un pipe qui prend deux operateurs:
+   - catchError : gere les erreurs
+   - map : gere le success cas et donc va appeler une action pour mettre a jour un état.
+/!\: Il faut s'assurer que ces deux operateurs ne retournent pas d'erreur sinon le process s'arretera également
+
+###Module
+
+class ayant le decorateur @NgModule
+- l'attribut 'declaration' est un tableau contenant les composant, custom Pipe, et custom Directive
+-   l'attribut 'import' est un tableau contenant les modules dont on a besoin dans notre module
+-  l'attribut 'providers' est un tableau contenant nos services
+  - plutot que de declarer nos service dans l'attribut 'providers', lorsque que je cree le service je peux faire @Injectable({providedIn : 'root'})
+- l'attribut 'bootstrap' definit les modules a utiliser au demarrage de l'application. on peut en definir plusieurs mais c est casse tete
+- l'attribut 'entryComponents' permet de declarer les composant créés programatiquement
+
+En decoupant l'application en module, Utiliser le CommonModule dans tous les modules autre que le AppModule pour importer *ngif *ngfor
+- ces directives sont presentes dans BrowserModule mais il ne doit y avoir qu'un seul appel a ce module et il est fait dans AppModule
+
+/!\ : si un composant d'un module declarer dans l' attribut 'declarations' utilise un composant, directive, pipe, ces trucs doivent etre importés ou declarés dans le module ou on planifie de les utiliser.
+Seul les services n'ont pas besoin d'etre importé, ils le seront dans le AppModule et seront accessible dans toute l'application
+
+### routing en module
+
+![](module_for_child.png)
+
+Dans le module, utiliser forChild (cf:ligne 14)
+Dans le path, mettre l'url qu el emodule gere.
+Ici on doit mettre path:'auth' , et le composant.
+(sur l'image il n est pas present)
+
+
+### Lazy loading
+
+![](lazy_loading_explanation.png)
+
+Ex: on a 3 modules. Plutot que de tous les télécharger au demarrage de l'pplication, lorsque je visite / ou /products ou /admin cela chargera le module adéquate et le code associé
+
+Comment faire ?
+
+![](lazy_loading_in_action.png)
+Dans le app.routing.modules.ts
+  Au path '/recipe', charger le module RecipesModule (cf:l.10) grace à loadChildren
+
+![](lazy_loading_recipe_module.png)
+
+/!\: dans le fichier routing de Recipe, au path, il faut le mettre egale à '' (cf:ligne 13)
+Si je ne fais pas de lazy loading, path serait égale à 'recipe', pour dire que se module gere tout ce qui se passe lorsque l'url commence par /recipe.
+En lazy loading, cette info est remoté qu routing générale de l'info
+
+- supprimer dans le app.module.ts, l'import de RecipeModule dans le tableau des imports. Sinon Angular levera une erreur car il cherchera a load le module lazyly et eagerly
+
+### Pre Lazy loading
+
+![](pre_lazy_loading.png)
+
+Pourquooi ?
+Dans le cas ou la connexion internet est mauvaise, ou que le fichier du module met du time a se télécharger.
+
+Dans le fichier de routing parent, utiliser une strategy (cf:l.19). Ici on dit, qd tu es sur un module, precharge les modules dont il peut avoir besoin
+
+Il est possible de creer sa pauvre strategie.
+
+### Modules & Services
+![](module_service.png)
+
+- Les services definit dans App Module sont disponible cree une instance dispo dans toute l'pplication
+- Les services definit dans un composant, creer une instance dispo dans ce composant et ses fils.
+- Les services definient dans un module eager sont comme le cas n°1.
+- Les services défnient dans un module lazy, cree une instance dispo que dans ce module. Si ce service est definit dans un autre module, cela creera une nouvelle instance.
